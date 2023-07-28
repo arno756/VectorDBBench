@@ -1,7 +1,7 @@
 from pydantic import BaseModel, SecretStr
 from ..api import DBConfig, DBCaseConfig, MetricType, EmptyDBCaseConfig
 
-SINGLESTOREDB_URL_PLACEHOLDER = "singlestoredb://%s:%s@%s/%s"
+SINGLESTOREDB_URL_PLACEHOLDER = "singlestore+mysqldb://%s:%s@%s/%s"
 
 class SingleStoreDBConfig(DBConfig):
     user_name: SecretStr = "admin"
