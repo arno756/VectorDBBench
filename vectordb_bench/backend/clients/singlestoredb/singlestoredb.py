@@ -106,7 +106,7 @@ class SingleStoreDB(VectorDB):
         return Table(
             self.table_name,
             s2_metadata,
-            Column(self._primary_field, Integer, primary_key=True, autoincrement=False),
+            Column(self._primary_field, Integer, primary_key=True, autoincrement=False, nullable=True),
             Column(self._vector_field, LargeBinary(self.dim)),
             extend_existing=True
         )
@@ -126,7 +126,7 @@ class SingleStoreDB(VectorDB):
         **kwargs: Any,
     ) -> (int, Exception):
         try:
-            items = [dict(id=metadata[i], embedding=np.array(embeddings[i], dtype='<f4')) for i in range(len(metadata))]
+            items = [dict(id=(metadata[i] if metadata[i] is not None else None), embedding=np.array(embeddings[i], dtype='<f4')) for i in range(len(metadata))]
             self.s2_session.execute(insert(self.s2_table), items)
             self.s2_session.commit()
             return len(metadata), None
